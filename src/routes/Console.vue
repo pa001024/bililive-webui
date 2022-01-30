@@ -20,6 +20,7 @@ const onMsg = (msg: any) => {
       requests.value = data.requests;
       queueEnable.value = data.queueEnable;
       freeEnable.value = data.freeEnable;
+      debugEnable.value = data.debug;
       break;
     }
     case 2: {
