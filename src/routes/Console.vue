@@ -5,6 +5,7 @@ import { IQueueRequest } from "..";
 const requests = ref<IQueueRequest[]>([]);
 const queueEnable = ref(true);
 const freeEnable = ref(false);
+const qqEnable = ref(false);
 const debugEnable = ref(false);
 
 const text = ref<string>("");
@@ -20,19 +21,14 @@ const onMsg = (msg: any) => {
       requests.value = data.requests;
       queueEnable.value = data.queueEnable;
       freeEnable.value = data.freeEnable;
+      qqEnable.value = data.qqEnable;
       debugEnable.value = data.debug;
       break;
     }
     case 2: {
       // req
       const { id, type, uid, uname, t } = data.data;
-      requests.value.push({
-        id,
-        type,
-        uid,
-        uname,
-        t,
-      });
+      requests.value.push({ id, type, uid, uname, t });
       break;
     }
   }
@@ -88,6 +84,13 @@ function switchFreeEnable() {
   });
 }
 
+function switchQQEnable() {
+  sendMsg({
+    action: "switchQQEnable",
+    qqEnable: qqEnable.value,
+  });
+}
+
 function switchDebugEnable() {
   sendMsg({
     action: "switchDebugEnable",
@@ -121,39 +124,24 @@ function edit(id: string) {
   <div class="main-container">
     <div class="switch">
       <label>
-        <input
-          type="checkbox"
-          v-model="queueEnable"
-          name="queueEnable"
-          @change="switchQueueEnable"
-        />
+        <input type="checkbox" v-model="queueEnable" name="queueEnable" @change="switchQueueEnable" />
         排队
       </label>
       <label>
-        <input
-          type="checkbox"
-          v-model="debugEnable"
-          name="debugEnable"
-          @change="switchDebugEnable"
-        />
+        <input type="checkbox" v-model="debugEnable" name="debugEnable" @change="switchDebugEnable" />
         调试
       </label>
       <label>
-        <input
-          type="checkbox"
-          v-model="freeEnable"
-          name="freeEnable"
-          @change="switchFreeEnable"
-        />
+        <input type="checkbox" v-model="freeEnable" name="freeEnable" @change="switchFreeEnable" />
         免费
+      </label>
+      <label>
+        <input type="checkbox" v-model="qqEnable" name="qqEnable" @change="switchQQEnable" />
+        QQ
       </label>
     </div>
     <div class="msg ctl">
-      <input
-        type="text"
-        v-model="text"
-        @keydown="(e) => e.key === 'Enter' && sendText()"
-      />
+      <input type="text" v-model="text" @keydown="e => e.key === 'Enter' && sendText()" />
       <button @click="sendText" style="margin-left: 4px">send</button>
     </div>
     <div class="queuectl ctl">
@@ -169,15 +157,7 @@ function edit(id: string) {
       <transition-group name="list">
         <div v-for="req in requests" :req="req" :key="req.id">
           {{ req.uname }}
-          <input
-            style="width: 80px"
-            v-if="editID === req.id"
-            type="text"
-            name="edittype"
-            v-model="req.type"
-            @blur="editReq(req)"
-            autofocus
-          />
+          <input style="width: 80px" v-if="editID === req.id" type="text" name="edittype" v-model="req.type" @blur="editReq(req)" autofocus />
           <span v-else @click="edit(req.id)">{{ req.type }}</span>
           <button class="option" @click="delReq(req.id)">X</button>
           <button class="option" @click="setReq(req.id)">√</button>

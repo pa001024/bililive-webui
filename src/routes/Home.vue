@@ -11,6 +11,7 @@ const requests = ref<IQueueRequest[]>([]);
 const activeReq = ref("");
 const queueEnable = ref<boolean>(true);
 const freeEnable = ref<boolean>(false);
+const qqEnable = ref<boolean>(false);
 
 let alertContent = ref("");
 let alertShow = ref(false);
@@ -25,6 +26,7 @@ const onMsg = (msg: any) => {
     case 0: {
       queueEnable.value = data.queueEnable;
       freeEnable.value = data.freeEnable;
+      qqEnable.value = data.qqEnable;
       if (data.msgs) msgs.value = data.msgs;
       if (data.requests) requests.value = data.requests;
       if (data.activeReq) activeReq.value = data.activeReq;
@@ -98,13 +100,12 @@ setInterval(() => {
 // tip
 const tips = (function* () {
   const list = [
-    "关注深渊免费一层 B坷垃插队全通~",
-    "看号配队免费~",
-    "粉丝群111584581~",
-    "iOS充值或者上舰请通过公众号呀~",
-    "每晚随缘直播 点关注 不迷路~",
-    "新增B坷垃插队功能 赠送B坷垃自动插队里~~",
-    "QwQ想做个任务 送个'牛哇牛哇'呀~",
+    "关注排队深渊免费一层 B坷垃插队全通~",
+    "看号配队免费~加群长期答疑",
+    "QQ群111584581~加群优先排队",
+    "iOS充值或者上舰请通过微信公众号bilibli直播姬~",
+    "每晚直播 点关注 不迷路~",
+    "赠送B坷垃自动插队~~",
   ];
   while (1) {
     for (const item of list) yield item;
