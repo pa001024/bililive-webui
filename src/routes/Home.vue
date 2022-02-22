@@ -12,6 +12,7 @@ const activeReq = ref("");
 const queueEnable = ref<boolean>(true);
 const freeEnable = ref<boolean>(false);
 const qqEnable = ref<boolean>(false);
+const maxQueue = ref(99);
 
 let alertContent = ref("");
 let alertShow = ref(false);
@@ -27,6 +28,7 @@ const onMsg = (msg: any) => {
       queueEnable.value = data.queueEnable;
       freeEnable.value = data.freeEnable;
       qqEnable.value = data.qqEnable;
+      maxQueue.value = data.maxQueue;
       if (data.msgs) msgs.value = data.msgs;
       if (data.requests) requests.value = data.requests;
       if (data.activeReq) activeReq.value = data.activeReq;
@@ -131,7 +133,7 @@ setInterval(() => {
 <template>
   <div class="main-container">
     <div class="queue">
-      <div class="header" v-if="requests.length">当前队列 ({{ requests.length }}/4)</div>
+      <div class="header" v-if="requests.length">当前队列 ({{ requests.length }}/{{ maxQueue }})</div>
       <div class="header" v-else-if="queueEnable">当前队列为空 {{ freeEnable ? "(免费)" : "(礼物)" }}</div>
       <div class="header" v-else>当前未开启排队</div>
 

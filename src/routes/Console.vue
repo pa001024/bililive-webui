@@ -7,6 +7,8 @@ const queueEnable = ref(true);
 const freeEnable = ref(false);
 const qqEnable = ref(false);
 const debugEnable = ref(false);
+const welcomeEnable = ref(false);
+const maxQueue = ref(99);
 
 const text = ref<string>("");
 const text2 = ref<string>("");
@@ -23,6 +25,8 @@ const onMsg = (msg: any) => {
       freeEnable.value = data.freeEnable;
       qqEnable.value = data.qqEnable;
       debugEnable.value = data.debug;
+      welcomeEnable.value = data.welcomeEnable;
+      maxQueue.value = data.maxQueue;
       break;
     }
     case 2: {
@@ -98,6 +102,17 @@ function switchDebugEnable() {
   });
 }
 
+function switchWelcomeEnable() {
+  sendMsg({
+    action: "switchWelcomeEnable",
+    welcomeEnable: welcomeEnable.value,
+  });
+}
+
+function setMaxQueue(val: number) {
+  sendMsg({ action: "setMaxQueue", val });
+}
+
 function setReq(id: string) {
   sendMsg({ action: "setReq", id });
 }
@@ -138,6 +153,16 @@ function edit(id: string) {
       <label>
         <input type="checkbox" v-model="qqEnable" name="qqEnable" @change="switchQQEnable" />
         QQ
+      </label>
+      <label>
+        <input type="checkbox" v-model="welcomeEnable" name="welcomeEnable" @change="switchWelcomeEnable" />
+        弹幕
+      </label>
+    </div>
+    <div class="setting">
+      <label>
+        max
+        <input type="number" v-model="maxQueue" name="maxQueue" @change="setMaxQueue(maxQueue)" />
       </label>
     </div>
     <div class="msg ctl">
